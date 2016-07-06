@@ -1,0 +1,27 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>EnergyTrading.WebApi.Common</id>
+        <title>EnergyTrading.WebApi.Common</title>
+        <description>common functionality for EnergyTrading webapi packages</description>
+        <version>1.0.0</version>
+        <releaseNotes></releaseNotes>
+        <copyright>2016</copyright>
+        <owners>SimonH</owners>
+        <authors>SimonH</authors>
+        <projectUrl>https://www.nowhere.com</projectUrl>
+        <tags>web client</tags>        
+        <dependencies>
+            <group>
+                <dependency id="CommonServiceLocator" />
+                <dependency id="SH.EnergyTrading.Core" />
+                <dependency id="Microsoft.AspNet.WebApi.Client" />
+                <dependency id="Newtonsoft.Json" />
+            </group>
+        </dependencies>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    </metadata>
+    <files>
+        <file src="EnergyTrading.WebApi.Common\bin\Release\EnergyTrading.WebApi.Common.*" target="lib\net40" />
+    </files>
+</package>
