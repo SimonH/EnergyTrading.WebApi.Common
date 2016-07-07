@@ -64,6 +64,8 @@
     <Compile Include="Client\WebClientException.cs" />
     <Compile Include="Faults\Fault.cs" />
     <Compile Include="Faults\FaultCategory.cs" />
+    <Compile Include="Faults\FaultException.cs" />
+    <Compile Include="Server\ICreateLoggerFactories.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
