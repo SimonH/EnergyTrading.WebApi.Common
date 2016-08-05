@@ -21,7 +21,7 @@ namespace EnergyTrading.WebApi.Common.Client
             return new HttpClient(handler);
         }
 
-        protected T HandleResponse<T>(HttpResponseMessage response)
+        protected async Task<T> HandleResponse<T>(HttpResponseMessage response)
         {
             if (response.IsSuccessStatusCode)
             {
@@ -29,7 +29,12 @@ namespace EnergyTrading.WebApi.Common.Client
                 {
                     return default(T);
                 }
-                var ret = response.Content.ReadAsAsync<T>(new MediaTypeFormatter[] { this.jsonMediaFormatter }).Result;
+                var contentString = await response.Content.ReadAsStringAsync();
+                if (string.IsNullOrWhiteSpace(contentString))
+                {
+                    return default(T);
+                }
+                var ret = await response.Content.ReadAsAsync<T>(new MediaTypeFormatter[] {this.jsonMediaFormatter});
                 if (ret == null)
                 {
                     throw new WebClientException("Could not read response as type : " + typeof(T));
@@ -40,7 +45,7 @@ namespace EnergyTrading.WebApi.Common.Client
             var errorMessage = response.ReasonPhrase;
             if (response.Content.Headers.ContentType.MediaType.Contains("json"))
             {
-                var fault = response.Content.ReadAsAsync<Fault>(new MediaTypeFormatter[] { this.jsonMediaFormatter }).Result;
+                var fault = await response.Content.ReadAsAsync<Fault>(new MediaTypeFormatter[] { this.jsonMediaFormatter });
                 if (fault != null)
                 {
                     errorMessage = fault.ErrorMessage;
@@ -64,7 +69,7 @@ namespace EnergyTrading.WebApi.Common.Client
                 using (var client = this.CreateHttpClient())
                 {
                     var response = await callFunc(client); ;
-                    return this.HandleResponse<T>(response);
+                    return await this.HandleResponse<T>(response);
                 }
             }
             catch (Exception e)
