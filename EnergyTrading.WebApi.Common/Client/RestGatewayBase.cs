@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Threading.Tasks;
-using EnergyTrading.Filtering;
 using EnergyTrading.WebApi.Common.Faults;
 using Newtonsoft.Json;
 
@@ -34,7 +33,7 @@ namespace EnergyTrading.WebApi.Common.Client
                 {
                     return default(T);
                 }
-                var ret = await response.Content.ReadAsAsync<T>(new MediaTypeFormatter[] {this.jsonMediaFormatter});
+                var ret = await response.Content.ReadAsAsync<T>(new MediaTypeFormatter[] {jsonMediaFormatter});
                 if (ret == null)
                 {
                     throw new WebClientException("Could not read response as type : " + typeof(T));
@@ -45,7 +44,7 @@ namespace EnergyTrading.WebApi.Common.Client
             var errorMessage = response.ReasonPhrase;
             if (response.Content.Headers.ContentType.MediaType.Contains("json"))
             {
-                var fault = await response.Content.ReadAsAsync<Fault>(new MediaTypeFormatter[] { this.jsonMediaFormatter });
+                var fault = await response.Content.ReadAsAsync<Fault>(new MediaTypeFormatter[] { jsonMediaFormatter });
                 if (fault != null)
                 {
                     errorMessage = fault.ErrorMessage;
@@ -58,18 +57,18 @@ namespace EnergyTrading.WebApi.Common.Client
             throw new WebClientException(errorMessage);
         }
 
-        protected async Task<T> CallClient<T>(string url, T item, Func<HttpClient, Task<HttpResponseMessage>> callFunc)
+        protected async Task<TReturn> CallClient<TInput, TReturn>(string url, TInput item, Func<HttpClient, Task<HttpResponseMessage>> callFunc)
         {
             if (callFunc == null)
             {
-                return default(T);
+                return default(TReturn);
             }
             try
             {
-                using (var client = this.CreateHttpClient())
+                using (var client = CreateHttpClient())
                 {
-                    var response = await callFunc(client); ;
-                    return await this.HandleResponse<T>(response);
+                    var response = await callFunc(client);
+                    return await HandleResponse<TReturn>(response);
                 }
             }
             catch (Exception e)
@@ -78,10 +77,10 @@ namespace EnergyTrading.WebApi.Common.Client
             }
         }
 
-        protected bool TryAction<T>(string url, T item, out T result, Func<string, T, T> action)
+        protected bool TryAction<TInput, TOutput>(string url, TInput item, out TOutput result, Func<string, TInput, TOutput> action)
         {
-            result = default(T);
-            if ((!typeof(T).IsValueType && item == null) || action == null)
+            result = default(TOutput);
+            if ((!typeof(TInput).IsValueType && item == null) || action == null)
             {
                 return false;
             }
@@ -97,34 +96,34 @@ namespace EnergyTrading.WebApi.Common.Client
             }
         }
 
-        protected async Task<T> PostAsync<T>(string url, T item) 
+        protected async Task<TReturn> PostAsync<TInput, TReturn>(string url, TInput item) 
         {
-            return await CallClient(url, item, c => c.PostAsync(url, item, this.jsonMediaFormatter));
+            return await CallClient<TInput, TReturn>(url, item, c => c.PostAsync(url, item, jsonMediaFormatter));
         }
 
-        protected T Post<T>(string url, T item) 
+        protected TReturn Post<TInput, TReturn>(string url, TInput item) 
         {
-            return PostAsync(url, item).Result;
+            return PostAsync<TInput, TReturn>(url, item).Result;
         }
 
-        protected bool TryPost<T>(string url, T item, out T result) 
+        protected bool TryPost<TInput, TOutput>(string url, TInput item, out TOutput result) 
         {
-            return TryAction(url, item, out result, this.Post);
+            return TryAction(url, item, out result, Post<TInput, TOutput>);
         }
 
-        protected async Task<T> PutAsync<T>(string url, T item) 
+        protected async Task<TReturn> PutAsync<TInput, TReturn>(string url, TInput item) 
         {
-            return await CallClient(url, item, c => c.PutAsync(url, item, jsonMediaFormatter));
+            return await CallClient<TInput, TReturn>(url, item, c => c.PutAsync(url, item, jsonMediaFormatter));
         }
 
-        protected T Put<T>(string url, T item) 
+        protected TReturn Put<TInput, TReturn>(string url, TInput item) 
         {
-            return PutAsync(url, item).Result;
+            return PutAsync<TInput, TReturn>(url, item).Result;
         }
 
-        protected bool TryPut<T>(string url, T item, out T result) 
+        protected bool TryPut<TInput, TReturn>(string url, TInput item, out TReturn result) 
         {
-            return this.TryAction(url, item, out result, this.Put);
+            return TryAction(url, item, out result, Put<TInput, TReturn>);
         }
     }
 }

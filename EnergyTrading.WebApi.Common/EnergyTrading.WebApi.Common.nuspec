@@ -4,7 +4,7 @@
         <id>EnergyTrading.WebApi.Common</id>
         <title>EnergyTrading.WebApi.Common</title>
         <description>common functionality for EnergyTrading webapi packages</description>
-        <version>1.0.1</version>
+        <version>1.0.2</version>
         <releaseNotes></releaseNotes>
         <copyright>2016</copyright>
         <owners>SimonH</owners>
