@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
@@ -92,6 +94,37 @@ namespace EnergyTrading.WebApi.Common.Client
             }
             catch (Exception)
             {
+                return false;
+            }
+        }
+
+        protected bool TryAction(Action action, out string exceptionMessage)
+        {
+            exceptionMessage = null;
+            try
+            {
+                action();
+                return true;
+            }
+            catch (Exception exception)
+            {
+                var aggregate = exception as AggregateException;
+                if (aggregate != null)
+                {
+                    aggregate.Flatten(); // flatten first to get rid of inner AggregateExceptions
+                    exceptionMessage = aggregate.InnerExceptions.Aggregate(string.Empty, (s, e) =>
+                    {
+                        if (string.IsNullOrEmpty(s))
+                        {
+                            return e.Message;
+                        }
+                        return s + " ;; " + e.Message;
+                    });
+                }
+                else
+                {
+                    exceptionMessage = exception.Message;
+                }
                 return false;
             }
         }
