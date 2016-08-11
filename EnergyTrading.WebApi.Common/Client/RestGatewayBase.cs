@@ -98,7 +98,7 @@ namespace EnergyTrading.WebApi.Common.Client
             }
         }
 
-        protected bool TryAction(Action action, out string exceptionMessage)
+        public static bool TryAction(Action action, out string exceptionMessage)
         {
             exceptionMessage = null;
             try
