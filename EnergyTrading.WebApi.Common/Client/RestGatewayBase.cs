@@ -35,7 +35,15 @@ namespace EnergyTrading.WebApi.Common.Client
                 {
                     return default(T);
                 }
-                var ret = await response.Content.ReadAsAsync<T>(new MediaTypeFormatter[] {jsonMediaFormatter});
+                T ret;
+                try
+                {
+                    ret = await response.Content.ReadAsAsync<T>(new MediaTypeFormatter[] { jsonMediaFormatter });
+                }
+                catch (Exception exception)
+                {
+                    throw new WebClientException("Could not read response as type : " + typeof(T) + ", Message : " + ToExceptionMessage(exception));
+                }
                 if (ret == null)
                 {
                     throw new WebClientException("Could not read response as type : " + typeof(T));
@@ -46,15 +54,28 @@ namespace EnergyTrading.WebApi.Common.Client
             var errorMessage = response.ReasonPhrase;
             if (response.Content.Headers.ContentType.MediaType.Contains("json"))
             {
-                var fault = await response.Content.ReadAsAsync<Fault>(new MediaTypeFormatter[] { jsonMediaFormatter });
+                Fault fault;
+                try
+                {
+                    fault = await response.Content.ReadAsAsync<Fault>(new MediaTypeFormatter[] { jsonMediaFormatter });
+                }
+                catch (Exception exception)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    throw new WebClientException("Could not obtain error as Fault. Exception : " + ToExceptionMessage(exception) + ", Content : " + content);
+                }
                 if (fault != null)
                 {
                     errorMessage = fault.ErrorMessage;
                 }
+                else
+                {
+                    errorMessage = await response.Content.ReadAsStringAsync();
+                }
             }
             else
             {
-                errorMessage = response.Content.ReadAsStringAsync().Result;
+                errorMessage = await response.Content.ReadAsStringAsync();
             }
             throw new WebClientException(errorMessage);
         }
@@ -98,6 +119,24 @@ namespace EnergyTrading.WebApi.Common.Client
             }
         }
 
+        public static string ToExceptionMessage(Exception exception)
+        {
+            var aggregate = exception as AggregateException;
+            if (aggregate != null)
+            {
+                aggregate.Flatten(); // flatten first to get rid of inner AggregateExceptions
+                return aggregate.InnerExceptions.Aggregate(string.Empty, (s, e) =>
+                {
+                    if (string.IsNullOrEmpty(s))
+                    {
+                        return e.Message;
+                    }
+                    return s + " ;; " + e.Message;
+                });
+            }
+            return exception.Message;
+        }
+
         public static bool TryAction(Action action, out string exceptionMessage)
         {
             exceptionMessage = null;
@@ -108,23 +147,7 @@ namespace EnergyTrading.WebApi.Common.Client
             }
             catch (Exception exception)
             {
-                var aggregate = exception as AggregateException;
-                if (aggregate != null)
-                {
-                    aggregate.Flatten(); // flatten first to get rid of inner AggregateExceptions
-                    exceptionMessage = aggregate.InnerExceptions.Aggregate(string.Empty, (s, e) =>
-                    {
-                        if (string.IsNullOrEmpty(s))
-                        {
-                            return e.Message;
-                        }
-                        return s + " ;; " + e.Message;
-                    });
-                }
-                else
-                {
-                    exceptionMessage = exception.Message;
-                }
+                exceptionMessage = ToExceptionMessage(exception);
                 return false;
             }
         }
