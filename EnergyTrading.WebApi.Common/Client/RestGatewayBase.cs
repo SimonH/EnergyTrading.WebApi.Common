@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
@@ -20,6 +19,11 @@ namespace EnergyTrading.WebApi.Common.Client
             var handler = new HttpClientHandler { UseDefaultCredentials = true };
 
             return new HttpClient(handler);
+        }
+
+        public Task<TReturn> GetAsync<TReturn>(string uri)
+        {
+            return CallClient<object, TReturn>(uri, null, c => c.GetAsync(uri));
         }
 
         protected async Task<T> HandleResponse<T>(HttpResponseMessage response)
