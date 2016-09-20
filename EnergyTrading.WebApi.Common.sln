@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnergyTrading.WebApi.Common", "EnergyTrading.WebApi.Common\EnergyTrading.WebApi.Common.csproj", "{D2518C2E-659E-4CEE-BFC7-8BB406A653CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnergyTrading.WebApi.Common.Tests", "EnergyTrading.WebApi.Common.Tests\EnergyTrading.WebApi.Common.Tests.csproj", "{FEC91918-27F7-4A8B-BCE6-8F44AA911374}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{D2518C2E-659E-4CEE-BFC7-8BB406A653CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2518C2E-659E-4CEE-BFC7-8BB406A653CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2518C2E-659E-4CEE-BFC7-8BB406A653CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEC91918-27F7-4A8B-BCE6-8F44AA911374}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEC91918-27F7-4A8B-BCE6-8F44AA911374}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEC91918-27F7-4A8B-BCE6-8F44AA911374}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEC91918-27F7-4A8B-BCE6-8F44AA911374}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
