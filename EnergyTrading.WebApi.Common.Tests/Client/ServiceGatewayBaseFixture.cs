@@ -16,18 +16,7 @@ namespace EnergyTrading.WebApi.Common.Tests.Client
         }
 
         [Test]
-        [TestCase("http://basevalue", "", "http://basevalue")]
-        [TestCase("http://basevalue", null, "http://basevalue")]
-        [TestCase("http://basevalue", "   ", "http://basevalue")]
-        [TestCase("http://basevalue/", "", "http://basevalue")]
-        [TestCase("http://basevalue/", null, "http://basevalue")]
-        [TestCase("http://basevalue/", "   ", "http://basevalue")]
-        [TestCase("http://basevalue", "/", "http://basevalue")]
-        [TestCase("http://basevalue/", "/", "http://basevalue")]
         [TestCase("http://basevalue", "/some/path/value", "http://basevalue/some/path/value")]
-        [TestCase("http://basevalue/", "/some/path/value", "http://basevalue/some/path/value")]
-        [TestCase("http://basevalue", "some/path/value", "http://basevalue/some/path/value")]
-        [TestCase("http://basevalue/", "some/path/value", "http://basevalue/some/path/value")]
         public void ConstructedServiceUri(string baseUri, string path, string expected)
         {
             Assert.That(new TestServiceGateway(baseUri, path).ExposedServiceUri, Is.EqualTo(expected));

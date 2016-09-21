@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Client\HttpPath.cs" />
     <Compile Include="Client\RestGatewayBase.cs" />
     <Compile Include="Client\ServiceGatewayBase.cs" />
     <Compile Include="Client\WebClientException.cs" />
