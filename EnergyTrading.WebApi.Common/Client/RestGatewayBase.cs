@@ -23,7 +23,7 @@ namespace EnergyTrading.WebApi.Common.Client
 
         public Task<TReturn> GetAsync<TReturn>(string uri)
         {
-            return CallClient<object, TReturn>(uri, null, c => c.GetAsync(uri));
+            return CallClient<TReturn>(c => c.GetAsync(uri));
         }
 
         protected async Task<T> HandleResponse<T>(HttpResponseMessage response)
@@ -84,7 +84,7 @@ namespace EnergyTrading.WebApi.Common.Client
             throw new WebClientException(errorMessage);
         }
 
-        protected async Task<TReturn> CallClient<TInput, TReturn>(string url, TInput item, Func<HttpClient, Task<HttpResponseMessage>> callFunc)
+        protected async Task<TReturn> CallClient<TReturn>(Func<HttpClient, Task<HttpResponseMessage>> callFunc)
         {
             if (callFunc == null)
             {
@@ -158,12 +158,12 @@ namespace EnergyTrading.WebApi.Common.Client
 
         protected async Task<TReturn> PostAsync<TInput, TReturn>(string url, TInput item) 
         {
-            return await CallClient<TInput, TReturn>(url, item, c => c.PostAsync(url, item, jsonMediaFormatter));
+            return await CallClient<TReturn>(c => c.PostAsync(url, item, jsonMediaFormatter));
         }
 
         protected TReturn Post<TInput, TReturn>(string url, TInput item) 
         {
-            return PostAsync<TInput, TReturn>(url, item).Result;
+            return PostAsync<TInput, TReturn>(url, item).ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
         protected bool TryPost<TInput, TOutput>(string url, TInput item, out TOutput result) 
@@ -173,7 +173,7 @@ namespace EnergyTrading.WebApi.Common.Client
 
         protected async Task<TReturn> PutAsync<TInput, TReturn>(string url, TInput item) 
         {
-            return await CallClient<TInput, TReturn>(url, item, c => c.PutAsync(url, item, jsonMediaFormatter));
+            return await CallClient<TReturn>(c => c.PutAsync(url, item, jsonMediaFormatter));
         }
 
         protected TReturn Put<TInput, TReturn>(string url, TInput item) 
@@ -184,6 +184,22 @@ namespace EnergyTrading.WebApi.Common.Client
         protected bool TryPut<TInput, TReturn>(string url, TInput item, out TReturn result) 
         {
             return TryAction(url, item, out result, Put<TInput, TReturn>);
+        }
+
+        protected async Task<TReturn> DeleteAsync<TReturn>(string url)
+        {
+            return await CallClient<TReturn>(c => c.DeleteAsync(url));
+        }
+
+        protected TReturn Delete<TReturn>(string url)
+        {
+            return DeleteAsync<TReturn>(url).ConfigureAwait(false).GetAwaiter().GetResult();
+        }
+
+        protected bool TryDelete<TReturn>(string url)
+        {
+            string message;
+            return TryAction(() => Delete<TReturn>(url), out message);;
         }
     }
 }
