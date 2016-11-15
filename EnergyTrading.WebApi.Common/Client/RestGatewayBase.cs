@@ -199,7 +199,7 @@ namespace EnergyTrading.WebApi.Common.Client
         protected bool TryDelete<TReturn>(string url)
         {
             string message;
-            return TryAction(() => Delete<TReturn>(url), out message);;
+            return TryAction(() => Delete<TReturn>(url), out message);
         }
     }
 }
