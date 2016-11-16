@@ -4,12 +4,12 @@
         <id>EnergyTrading.WebApi.Common</id>
         <title>EnergyTrading.WebApi.Common</title>
         <description>common functionality for EnergyTrading webapi packages</description>
-        <version>1.0.9</version>
+        <version>1.0.12</version>
         <releaseNotes></releaseNotes>
         <copyright>2016</copyright>
         <owners>SimonH</owners>
         <authors>SimonH</authors>
-        <projectUrl>https://www.nowhere.com</projectUrl>
+        <projectUrl>https://github.com/SimonH/EnergyTrading.WebApi.Common</projectUrl>
         <tags>web client</tags>        
         <dependencies>
             <group>

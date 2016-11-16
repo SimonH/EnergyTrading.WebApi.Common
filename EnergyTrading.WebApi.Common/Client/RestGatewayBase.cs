@@ -13,12 +13,24 @@ namespace EnergyTrading.WebApi.Common.Client
     {
         protected readonly JsonMediaTypeFormatter jsonMediaFormatter = new JsonMediaTypeFormatter { SerializerSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All } };
 
+        private HttpMessageHandler httpMessageHandler;
+
         protected HttpClient CreateHttpClient()
         {
+           
             // used from ET.Mdm.Client to try and prevent proxy errors but did not work
-            var handler = new HttpClientHandler { UseDefaultCredentials = true };
+            var handler = httpMessageHandler ?? new HttpClientHandler { UseDefaultCredentials = true };
 
             return new HttpClient(handler);
+        }
+
+        internal void UseMockHttpMessageHandler(HttpMessageHandler messageHandler)
+        {
+            if (messageHandler  == null)
+            {
+                throw new ArgumentNullException(nameof(messageHandler));
+            }
+            this.httpMessageHandler = messageHandler;
         }
 
         public Task<TReturn> GetAsync<TReturn>(string uri)
@@ -31,6 +43,10 @@ namespace EnergyTrading.WebApi.Common.Client
             if (response.IsSuccessStatusCode)
             {
                 if (response.StatusCode == HttpStatusCode.NoContent)
+                {
+                    return default(T);
+                }
+                if (response.Content == null)
                 {
                     return default(T);
                 }
