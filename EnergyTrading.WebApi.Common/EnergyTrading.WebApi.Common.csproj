@@ -64,6 +64,10 @@
     <Compile Include="Client\RestGatewayBase.cs" />
     <Compile Include="Client\ServiceGatewayBase.cs" />
     <Compile Include="Client\WebClientException.cs" />
+    <Compile Include="Contracts\MappedContract.cs" />
+    <Compile Include="Contracts\MappingId.cs" />
+    <Compile Include="Contracts\UniqueContract.cs" />
+    <Compile Include="Contracts\VersionedUniqueContract.cs" />
     <Compile Include="Faults\Fault.cs" />
     <Compile Include="Faults\FaultCategory.cs" />
     <Compile Include="Faults\FaultException.cs" />
@@ -71,7 +75,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="EnergyTrading.WebApi.Common.nuspec" />
+    <None Include="EnergyTrading.WebApi.Common.nuspec">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
