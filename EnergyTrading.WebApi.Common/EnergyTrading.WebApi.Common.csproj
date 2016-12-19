@@ -68,6 +68,7 @@
     <Compile Include="Contracts\MappingId.cs" />
     <Compile Include="Contracts\UniqueContract.cs" />
     <Compile Include="Contracts\VersionedUniqueContract.cs" />
+    <Compile Include="Extensions\UniqueContractExtensions.cs" />
     <Compile Include="Faults\Fault.cs" />
     <Compile Include="Faults\FaultCategory.cs" />
     <Compile Include="Faults\FaultException.cs" />

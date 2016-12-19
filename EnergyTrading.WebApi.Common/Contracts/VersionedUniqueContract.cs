@@ -12,7 +12,7 @@
             }
             set
             {
-                Guard(value, nameof(Version));
+                Guard(_version, nameof(Version));
                 _version = value;
             }
         }

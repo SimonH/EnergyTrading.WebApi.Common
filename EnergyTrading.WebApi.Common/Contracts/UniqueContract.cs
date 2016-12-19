@@ -22,7 +22,7 @@ namespace EnergyTrading.WebApi.Common.Contracts
             }
             set
             {
-                Guard(value, nameof(UniqueReference));
+                Guard(_uniqueReference, nameof(UniqueReference));
                 _uniqueReference = value;
             }
         }

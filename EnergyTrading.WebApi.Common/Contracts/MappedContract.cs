@@ -4,11 +4,11 @@ namespace EnergyTrading.WebApi.Common.Contracts
 {
     public abstract class MappedContract : VersionedUniqueContract
     {
-        public MappedContract()
+        protected MappedContract()
         {
             Mappings = new List<MappingId>();
         }
 
-        List<MappingId> Mappings { get; set; }
+        public List<MappingId> Mappings { get; set; }
     }
 }

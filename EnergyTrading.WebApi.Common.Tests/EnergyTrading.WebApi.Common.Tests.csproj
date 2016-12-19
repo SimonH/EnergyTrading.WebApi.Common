@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Client\HttpPathFixture.cs" />
     <Compile Include="Client\ServiceGatewayBaseFixture.cs" />
+    <Compile Include="Extensions\UniqueConstraintExtensionsFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
