@@ -5,5 +5,6 @@
         public string SourceName { get; set; }
         public string Identifier { get; set; }
         public bool IsOriginal { get; set; }
+        public ApplicablePeriod ApplicablePeriod { get; set; }
     }
 }
