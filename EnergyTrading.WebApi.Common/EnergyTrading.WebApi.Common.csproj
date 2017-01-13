@@ -65,9 +65,11 @@
     <Compile Include="Client\ServiceGatewayBase.cs" />
     <Compile Include="Client\WebClientException.cs" />
     <Compile Include="Contracts\ApplicablePeriod.cs" />
+    <Compile Include="Contracts\ContractReference.cs" />
     <Compile Include="Contracts\EnumValueType.cs" />
     <Compile Include="Contracts\MappedContract.cs" />
     <Compile Include="Contracts\MappingId.cs" />
+    <Compile Include="Contracts\RelatedContractReference.cs" />
     <Compile Include="Contracts\ReviewablePeriod.cs" />
     <Compile Include="Contracts\UniqueContract.cs" />
     <Compile Include="Contracts\VersionedUniqueContract.cs" />
