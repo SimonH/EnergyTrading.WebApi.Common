@@ -55,6 +55,10 @@ namespace EnergyTrading.WebApi.Common.Client
                 {
                     return default(T);
                 }
+                if (typeof(T) == typeof(string))
+                {
+                    return (T)(object)contentString; // not nice but allows us to always return content if people request a string
+                }
                 T ret;
                 try
                 {
